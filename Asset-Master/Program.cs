@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(c =>
 { //<-- NOTE 'Add' instead of 'Configure'
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "SmartCV",
+        Title = "Asset Tool",
         Version = "v1"
     });
 });
@@ -59,6 +59,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IAsset, AssetRepository>();
+builder.Services.AddScoped<Isharepoint_Asset, sharepoint_AssetRepository>();
+
 builder.Services.AddHangfireServer();
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

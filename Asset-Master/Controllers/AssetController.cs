@@ -30,11 +30,27 @@ public class AssetController : Controller
         _recurringJobManager = recurringJobManager;
     }
     [HttpGet]
+    [Route("GetAllAsset")]
+    public string NewGetAllassetsJobs()
+    {
+        //Recurring Jobs
+        //Recurring jobs fire many times on the specified CRON schedule.
+        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.MinuteInterval(1440)); //Cron.Minutely());
+
+
+
+        return "The Recurring Job will run for getting the data From MariaDb and sync the same data to the Sharepoint List!";
+    }
+
+
+
+
+    [NonAction]
     public async Task<IActionResult> GetAllassets()
     {
         IEnumerable<assets> assets = await _assets.GetAllassets();
 
-        /*// Connect to SharePoint and perform the check and insert operations
+        // Connect to SharePoint and perform the check and insert operations
         string clientId = "05d111d1-e632-40e0-803b-0976c6025430";
         string clientSecret = "bLs8Q~tNx~HEfY6saAQDEUuz9XH80MwBb2Fdidc-";
         string tenantId = "7bf109b7-39a2-49d4-911d-09736db83214";
@@ -225,7 +241,7 @@ public class AssetController : Controller
             Console.WriteLine($"Error accessing SharePoint list: {ex.Message}");
             return StatusCode(500); // Return an error status code if there's an issue with SharePoint
         }
-        */
+        
         return Ok(assets);
     }
     [HttpGet("{id}")]
@@ -234,35 +250,18 @@ public class AssetController : Controller
         assets assets = await _assets.GetassetsById(id);
         return Ok(assets);
     }
-    [HttpPost]
-    public async Task<IActionResult> Createassets(Createassets model)
-    {
-        int assets = await _assets.Createassets(model);
-
-        if (assets != 0)
-        {
-            return Ok("The assets was successfully added to the database");
-        }
-
-        return StatusCode(StatusCodes.Status500InternalServerError, "The assets was successfully added to the database");
-    }
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> Updateassets(int id, Createassets model)
     {
         await _assets.Updateassets(id, model);
         return Ok("The assets was successfully updated in the database");
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Deleteassets(int id)
-    {
-        await _assets.Deleteassets(id);
-        return Ok("The assets was successfully deleted in the database");
-    }
-
+    
 
 
     [HttpGet]
-    [Route("IRecurringJob")]
+    [Route("SharepointToMariaDB")]
     public string RecurringJobs()
     {
         //Recurring Jobs
@@ -271,7 +270,7 @@ public class AssetController : Controller
 
 
 
-        return "Welcome user in Recurring Job Demo!";
+        return "The Recurring Job Will run for checking the sharepoint list, if there is any changes on that, that will update into MariaDB!";
     }
 
     [NonAction]

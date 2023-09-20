@@ -36,20 +36,7 @@ public class AssetRepository : IAsset
         if (assets == null) throw new KeyNotFoundException("assets not found");
         return assets;
     }
-    public async Task<int> Createassets(Createassets model)
-    {
-        // validate
-        if (_dbcontext.assets.Any(x => x.serial == model.serial))
-            throw new ApplicationException("assets with the email '" + model.serial + "' already exists");
-
-        // map model to new assets object
-        var assets = _mapper.Map<assets>(model);
-
-        // save user
-        _dbcontext.assets.Add(assets);
-        await _dbcontext.SaveChangesAsync().ConfigureAwait(true);
-        return assets.id;
-    }
+    
     public async Task Updateassets(int id, Createassets model)
     {
         assets? assets = await getassets(id);
@@ -63,12 +50,7 @@ public class AssetRepository : IAsset
         await _dbcontext.SaveChangesAsync().ConfigureAwait(true);
     }
 
-    public async Task Deleteassets(int id)
-    {
-        assets? assets = await getassets(id);
-        _dbcontext.assets.Remove(assets);
-        await _dbcontext.SaveChangesAsync().ConfigureAwait(true);
-    }
+  
 
     Task IAsset.SaveAssetsToSharePoint(IEnumerable<assets> assets)
     {

@@ -15,6 +15,8 @@ public class APIDbContext : DbContext
         _configuration = configuration;
     }
     public DbSet<assets> assets { get; set; }
+    public DbSet<sharepoint_Asset> sharepoint_Asset { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseMySql(_configuration.GetConnectionString("DataBase"), new MySqlServerVersion(new Version(8, 0, 11)));
