@@ -38,13 +38,13 @@ public class sharepoint_AssetController : Controller
     {
         //Recurring Jobs
         //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId1", () => GetAllavailableassets(), Cron.MinuteInterval(5)); //Cron.Minutely());
+        _recurringJobManager.AddOrUpdate("jobId1", () => GetAllavailableassets(), Cron.MinuteInterval(180)); //Cron.Minutely());
         return "The Recurring Job will run for getting the Available Asset from MariaDB and Write the same to the Sharepoint List!";
     }
 
 
 
-    [HttpGet]
+    [NonAction]
     public async Task<IActionResult> GetAllavailableassets()
     {
         IEnumerable<sharepoint_Asset> sassets = await _sassets.GetAllavailableassets();

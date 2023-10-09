@@ -244,14 +244,18 @@ public class AssetController : Controller
         
         return Ok(assets);
     }
-    [HttpGet("{id}")]
+
+
+    [NonAction]
+    //[HttpGet("{id}")]
     public async Task<IActionResult> GetassetsById(int id)
     {
         assets assets = await _assets.GetassetsById(id);
         return Ok(assets);
     }
     
-    [HttpPut("{id}")]
+    //[HttpPut("{id}")]
+    [NonAction]
     public async Task<IActionResult> Updateassets(int id, Createassets model)
     {
         await _assets.Updateassets(id, model);
@@ -266,7 +270,7 @@ public class AssetController : Controller
     {
         //Recurring Jobs
         //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId", () => MinutelyJobMessageAsync(), Cron.MinuteInterval(5)); //Cron.Minutely());
+        _recurringJobManager.AddOrUpdate("jobId", () => MinutelyJobMessageAsync(), Cron.MinuteInterval(180)); //Cron.Minutely());
 
 
 
@@ -300,7 +304,7 @@ public class AssetController : Controller
                 .Request()
                 .Select("id,fields")
                 .Expand("fields")
-                .Filter("fields/ChangesStatus eq 'yes'") // Items where ChangesStatus is not 'rencata'
+                .Filter("fields/ChangesStatus eq 'Yes'") // Items where ChangesStatus is not 'rencata'
                 .GetAsync();
 
 
