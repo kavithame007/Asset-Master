@@ -148,6 +148,7 @@ public class sharepoint_AssetController : Controller
                             { "AssetTag", asset.asset_tag},
                             { "ModelName", asset.modelname },
                             { "CategoryName", asset.categoryname},
+                            {"serial", asset.serial },
                             
                             // Add other fields as needed
                         }
@@ -202,6 +203,7 @@ public class sharepoint_AssetController : Controller
                         { "AssetTag", asset.asset_tag},
                         { "ModelName", asset.modelname },
                         { "CategoryName", asset.categoryname},
+                        {"serial", asset.serial },
                         // Add other fields as needed
                     }
                             }
@@ -234,41 +236,20 @@ public class sharepoint_AssetController : Controller
                 // Check if the unique identifier already exists in SharePoint
                 if (sassets.Any(asset => asset.asset_tag == uniqueIdentifier))
                 {
+                    Console.WriteLine("none");
+                }
+                else
+                {
                     // Create Operation: Create a new list item
 
-                    string itemID = (string)fields.AdditionalData["ID"];
+                    string itemID = fields.Id;
+                    //(string)fields.AdditionalData["ID"];
                     await graphClient.Sites[siteId].Lists[listId].Items[itemID].Request().DeleteAsync();
                     Console.WriteLine("Created Item ID: " + itemID);
 
                     deleteCount++;
                 }
-                
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

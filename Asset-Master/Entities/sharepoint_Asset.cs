@@ -9,6 +9,7 @@ namespace Asset_Master.Entities
         public int rownum { get; set; }
         public string? name { get; set; }
         public string? asset_tag { get; set; }
+        public string? serial { get; set; }
         public string? modelname { get; set; }
         public string? categoryname { get; set; }
     }
@@ -17,6 +18,7 @@ namespace Asset_Master.Entities
     {
         public string? name { get; set; }
         public string? asset_tag { get; set; }
+        public string? serial { get; set; }
         public string? modelname { get; set; }
         public string? categoryname { get; set; }
     }
