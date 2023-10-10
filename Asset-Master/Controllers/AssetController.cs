@@ -35,7 +35,7 @@ public class AssetController : Controller
     {
         //Recurring Jobs
         //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.MinuteInterval(1440)); //Cron.Minutely());
+        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.Daily); //Cron.Minutely());
 
 
 
@@ -270,7 +270,7 @@ public class AssetController : Controller
     {
         //Recurring Jobs
         //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId", () => MinutelyJobMessageAsync(), Cron.MinuteInterval(180)); //Cron.Minutely());
+        _recurringJobManager.AddOrUpdate("jobId", () => MinutelyJobMessageAsync(), Cron.Hourly(3)); //Cron.Minutely());
 
 
 
