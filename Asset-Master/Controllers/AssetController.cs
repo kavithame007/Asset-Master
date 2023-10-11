@@ -35,7 +35,7 @@ public class AssetController : Controller
     {
         //Recurring Jobs
         //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.Daily); //Cron.Minutely());
+        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.Daily); //Cron.Minutely());Cron.MinuteInterval(5));
 
 
 
@@ -67,8 +67,8 @@ public class AssetController : Controller
         {
             GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
-            string siteId = "2741d2aa-86e3-45da-81de-532088acaadb";
-            string listId = "36ba7abb-a095-4023-8839-64eb2186dc11"; // Replace with the actual ID of your SharePoint list
+            string siteId = "ee34a301-d614-4508-835f-9c1f2e339864";
+            string listId = "76239967-d495-4453-82ef-c3b426f20922"; // Replace with the actual ID of your SharePoint list
 
             // Read Operation: Get all items from the list
             var listItems = await graphClient.Sites[siteId].Lists[listId]
@@ -166,8 +166,8 @@ public class AssetController : Controller
                 {
 
                     // Assuming you have retrieved the items from SharePoint
-                    string siteId1 = "2741d2aa-86e3-45da-81de-532088acaadb";
-                    string listId1 = "36ba7abb-a095-4023-8839-64eb2186dc11";
+                    string siteId1 = "ee34a301-d614-4508-835f-9c1f2e339864";
+                    string listId1 = "76239967-d495-4453-82ef-c3b426f20922";
                     string emailColumnInternalName = "ToolID";
                     string emailToFilter = asset.id.ToString();
                     //string newEmailValue = "kajedemail@example.com"; // Replace with the new email value you want to set
@@ -270,7 +270,7 @@ public class AssetController : Controller
     {
         //Recurring Jobs
         //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId", () => MinutelyJobMessageAsync(), Cron.Hourly(3)); //Cron.Minutely());
+        _recurringJobManager.AddOrUpdate("jobId", () => MinutelyJobMessageAsync(), Cron.Hourly(3)); //Cron.MinuteInterval(5)); //Cron.Hourly(3)); //Cron.Minutely());
 
 
 
@@ -296,8 +296,8 @@ public class AssetController : Controller
         {
             GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
-            string siteId = "2741d2aa-86e3-45da-81de-532088acaadb";
-            string listId = "36ba7abb-a095-4023-8839-64eb2186dc11"; // Replace with the actual ID of your SharePoint list
+            string siteId = "ee34a301-d614-4508-835f-9c1f2e339864";
+            string listId = "76239967-d495-4453-82ef-c3b426f20922"; // Replace with the actual ID of your SharePoint list
 
             var listItems = await graphClient.Sites[siteId].Lists[listId]
                 .Items

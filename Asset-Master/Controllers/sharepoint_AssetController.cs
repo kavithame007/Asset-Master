@@ -70,8 +70,8 @@ public class sharepoint_AssetController : Controller
         {
             GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
-            string siteId = "2741d2aa-86e3-45da-81de-532088acaadb";
-            string listId = "c805035c-357d-4f82-ba42-416b7108d1de"; // Replace with the actual ID of your SharePoint list
+            string siteId = "ee34a301-d614-4508-835f-9c1f2e339864";
+            string listId = "96fedfa7-c7ad-4399-851e-ba1527f0dabd"; // Replace with the actual ID of your SharePoint list
 
             // Read Operation: Get all items from the list
             var listItems = await graphClient.Sites[siteId].Lists[listId]
@@ -164,8 +164,8 @@ public class sharepoint_AssetController : Controller
                 {
 
                     // Assuming you have retrieved the items from SharePoint
-                    string siteId1 = "2741d2aa-86e3-45da-81de-532088acaadb";
-                    string listId1 = "c805035c-357d-4f82-ba42-416b7108d1de";
+                    string siteId1 = "ee34a301-d614-4508-835f-9c1f2e339864";
+                    string listId1 = "96fedfa7-c7ad-4399-851e-ba1527f0dabd";
                     string emailColumnInternalName = "AssetTag";
                     string emailToFilter = asset.asset_tag.ToString();
                     //string newEmailValue = "kajedemail@example.com"; // Replace with the new email value you want to set
