@@ -321,6 +321,7 @@ public class AssetController : Controller
                 int statusid = ParseToInt(fields.AdditionalData.ContainsKey("Status_id") ? fields.AdditionalData["Status_id"] : null);
                 string aserial = fields.AdditionalData["Serial"].ToString();
                 string aname = fields.AdditionalData["Title"].ToString();
+                string assettag = fields.AdditionalData["Assettag"].ToString();
 
                 string msnipet = fields.AdditionalData.ContainsKey("snipeit_workstation") ? fields.AdditionalData["snipeit_workstation"].ToString() : "";
 
@@ -333,7 +334,8 @@ public class AssetController : Controller
                     model_id = modelid,
                     user_id = userid,
                     status_id = statusid,
-                    _snipeit_workstation_1 = msnipet
+                    _snipeit_workstation_1 = msnipet,
+                    asset_tag = assettag
                 };
                 await _assets.Updateassets(id, model);
                 Console.WriteLine("Item ID: " + item.Id);
@@ -352,7 +354,7 @@ public class AssetController : Controller
                             AdditionalData = new Dictionary<string, object>
                     {
                         { "ChangesStatus", "No"}, // Replace "YourEmailInternalName" with the actual internal name of the Email field in SharePoint
-                         { "Status_id","5"}// Add other fields as needed
+                         //{ "Status_id","5"}// Add other fields as needed
                     }
                         }
                     };
