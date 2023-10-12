@@ -53,7 +53,7 @@ public class sharepoint_AssetController : Controller
 
 
 
-    [HttpGet]
+    [NonAction]
     public async Task<IActionResult> GetAllavailableassets()
     {
         IEnumerable<sharepoint_Asset> sassets = await _sassets.GetAllavailableassets();
