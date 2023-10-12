@@ -25,12 +25,13 @@ public class AssetController : Controller
     private readonly IRecurringJobManager _recurringJobManager;
     private readonly IConfiguration _configuration; 
 
-    public AssetController(IAsset assets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager)
+    public AssetController(IAsset assets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager, IConfiguration configuration)
     {
         _assets = assets;
         _mapper = mapper;
         _backgroundJobClient = backgroundJobClient;
         _recurringJobManager = recurringJobManager;
+        _configuration = configuration;
     }
     [HttpGet]
     [Route("GetAllAsset")]

@@ -3,6 +3,7 @@ using Asset_Master.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph.ExternalConnectors;
 using static Asset_Master.Repository.sharepoint_AssetRepository;
 
 

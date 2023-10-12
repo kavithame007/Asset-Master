@@ -7,6 +7,7 @@ using Microsoft.Graph.Auth;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using System.Linq;
+using Microsoft.Graph.ExternalConnectors;
 
 namespace Asset_Master.Controllers;
 
@@ -22,12 +23,19 @@ public class sharepoint_AssetController : Controller
     private readonly IRecurringJobManager _recurringJobManager;
     private readonly IConfiguration _configuration;
 
-    public sharepoint_AssetController(Isharepoint_Asset sassets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager)//ISharePointService sharePointService
+    public string _clientId = string.Empty;
+    public string _clientSecret = string.Empty;
+    public string _tenantId = string.Empty;
+    public string _siteId = string.Empty;
+    public string _listId = string.Empty;
+
+    public sharepoint_AssetController(Isharepoint_Asset sassets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager, IConfiguration configuration)
     {
         _sassets = sassets;
         _mapper = mapper;
         _backgroundJobClient = backgroundJobClient;
         _recurringJobManager = recurringJobManager;
+        _configuration = configuration;
     }
 
 
@@ -45,16 +53,16 @@ public class sharepoint_AssetController : Controller
 
 
 
-    [NonAction]
+    [HttpGet]
     public async Task<IActionResult> GetAllavailableassets()
     {
         IEnumerable<sharepoint_Asset> sassets = await _sassets.GetAllavailableassets();
 
-        string _clientId = _configuration["EntitlementSettings:clientId"];
-        string _clientSecret = _configuration["EntitlementSettings:clientSecret"];
-        string _tenantId = _configuration["EntitlementSettings:tenantId"];
-        string _siteId = _configuration["EntitlementSettings:siteId"];
-        string _listId = _configuration["EntitlementSettings:listId2"];
+         _clientId = _configuration.GetSection("EntitlementSettings:ClientId").Value.ToString();
+         _clientSecret = _configuration.GetSection("EntitlementSettings:clientSecret").Value.ToString();
+         _tenantId = _configuration.GetSection("EntitlementSettings:tenantId").Value.ToString();  
+         _siteId = _configuration.GetSection("EntitlementSettings:siteId").Value.ToString();  
+         _listId = _configuration.GetSection("EntitlementSettings:listId2").Value.ToString(); 
 
 
 
