@@ -7,6 +7,8 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Asset_Master.Entities;
 using Asset_Master.Interfaces;
+using Microsoft.Graph.ExternalConnectors;
+using Microsoft.Extensions.Configuration;
 
 namespace Asset_Master.Controllers;
 
@@ -21,8 +23,9 @@ public class AssetController : Controller
 
     private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly IRecurringJobManager _recurringJobManager;
+    private readonly IConfiguration _configuration; 
 
-    public AssetController(IAsset assets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager)//ISharePointService sharePointService
+    public AssetController(IAsset assets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager)
     {
         _assets = assets;
         _mapper = mapper;
@@ -33,9 +36,8 @@ public class AssetController : Controller
     [Route("GetAllAsset")]
     public string NewGetAllassetsJobs()
     {
-        //Recurring Jobs
-        //Recurring jobs fire many times on the specified CRON schedule.
-        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.Daily); //Cron.Minutely());Cron.MinuteInterval(5));
+        
+        _recurringJobManager.AddOrUpdate("jobId2", () => GetAllassets(), Cron.Daily);
 
 
 
@@ -48,12 +50,19 @@ public class AssetController : Controller
     [NonAction]
     public async Task<IActionResult> GetAllassets()
     {
+        string _clientId = _configuration["EntitlementSettings:clientId"];
+        string _clientSecret = _configuration["EntitlementSettings:clientSecret"];
+        string _tenantId = _configuration["EntitlementSettings:tenantId"];
+        string _siteId = _configuration["EntitlementSettings:siteId"];
+        string _listId = _configuration["EntitlementSettings:listId"];
+
         IEnumerable<assets> assets = await _assets.GetAllassets();
 
+
         // Connect to SharePoint and perform the check and insert operations
-        string clientId = "05d111d1-e632-40e0-803b-0976c6025430";
-        string clientSecret = "bLs8Q~tNx~HEfY6saAQDEUuz9XH80MwBb2Fdidc-";
-        string tenantId = "7bf109b7-39a2-49d4-911d-09736db83214";
+        string clientId = _clientId;
+        string clientSecret = _clientSecret;
+        string tenantId = _tenantId;
 
         IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
             .Create(clientId)
@@ -67,8 +76,8 @@ public class AssetController : Controller
         {
             GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
-            string siteId = "ee34a301-d614-4508-835f-9c1f2e339864";
-            string listId = "76239967-d495-4453-82ef-c3b426f20922"; // Replace with the actual ID of your SharePoint list
+            string siteId = _siteId;
+            string listId = _listId; // Replace with the actual ID of your SharePoint list
 
             // Read Operation: Get all items from the list
             var listItems = await graphClient.Sites[siteId].Lists[listId]
@@ -166,8 +175,8 @@ public class AssetController : Controller
                 {
 
                     // Assuming you have retrieved the items from SharePoint
-                    string siteId1 = "ee34a301-d614-4508-835f-9c1f2e339864";
-                    string listId1 = "76239967-d495-4453-82ef-c3b426f20922";
+                    string siteId1 = _siteId;
+                    string listId1 = _listId;
                     string emailColumnInternalName = "ToolID";
                     string emailToFilter = asset.id.ToString();
                     //string newEmailValue = "kajedemail@example.com"; // Replace with the new email value you want to set
@@ -280,9 +289,16 @@ public class AssetController : Controller
     [NonAction]
     public async Task<string> MinutelyJobMessageAsync()
     {
-        string clientId = "05d111d1-e632-40e0-803b-0976c6025430";
-        string clientSecret = "bLs8Q~tNx~HEfY6saAQDEUuz9XH80MwBb2Fdidc-";
-        string tenantId = "7bf109b7-39a2-49d4-911d-09736db83214";
+        string _clientId = _configuration["EntitlementSettings:clientId"];
+        string _clientSecret = _configuration["EntitlementSettings:clientSecret"];
+        string _tenantId = _configuration["EntitlementSettings:tenantId"];
+        string _siteId = _configuration["EntitlementSettings:siteId"];
+        string _listId = _configuration["EntitlementSettings:listId"];
+
+
+        string clientId = _clientId;
+        string clientSecret = _clientSecret;
+        string tenantId = _tenantId;
 
         IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
             .Create(clientId)
@@ -296,8 +312,8 @@ public class AssetController : Controller
         {
             GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
-            string siteId = "ee34a301-d614-4508-835f-9c1f2e339864";
-            string listId = "76239967-d495-4453-82ef-c3b426f20922"; // Replace with the actual ID of your SharePoint list
+            string siteId = _siteId;
+            string listId = _listId; // Replace with the actual ID of your SharePoint list
 
             var listItems = await graphClient.Sites[siteId].Lists[listId]
                 .Items
@@ -412,7 +428,3 @@ public class AssetController : Controller
     }
 
 }
-
-
-
-

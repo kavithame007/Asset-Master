@@ -20,6 +20,7 @@ public class sharepoint_AssetController : Controller
 
     private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly IRecurringJobManager _recurringJobManager;
+    private readonly IConfiguration _configuration;
 
     public sharepoint_AssetController(Isharepoint_Asset sassets, IMapper mapper, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager)//ISharePointService sharePointService
     {
@@ -49,14 +50,18 @@ public class sharepoint_AssetController : Controller
     {
         IEnumerable<sharepoint_Asset> sassets = await _sassets.GetAllavailableassets();
 
-
+        string _clientId = _configuration["EntitlementSettings:clientId"];
+        string _clientSecret = _configuration["EntitlementSettings:clientSecret"];
+        string _tenantId = _configuration["EntitlementSettings:tenantId"];
+        string _siteId = _configuration["EntitlementSettings:siteId"];
+        string _listId = _configuration["EntitlementSettings:listId2"];
 
 
 
         // Connect to SharePoint and perform the check and insert operations
-        string clientId = "05d111d1-e632-40e0-803b-0976c6025430";
-        string clientSecret = "bLs8Q~tNx~HEfY6saAQDEUuz9XH80MwBb2Fdidc-";
-        string tenantId = "7bf109b7-39a2-49d4-911d-09736db83214";
+        string clientId = _clientId;
+        string clientSecret = _clientSecret;
+        string tenantId = _tenantId;
 
         IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
             .Create(clientId)
@@ -70,8 +75,8 @@ public class sharepoint_AssetController : Controller
         {
             GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
-            string siteId = "ee34a301-d614-4508-835f-9c1f2e339864";
-            string listId = "96fedfa7-c7ad-4399-851e-ba1527f0dabd"; // Replace with the actual ID of your SharePoint list
+            string siteId = _siteId;
+            string listId = _listId; // Replace with the actual ID of your SharePoint list
 
             // Read Operation: Get all items from the list
             var listItems = await graphClient.Sites[siteId].Lists[listId]
@@ -164,8 +169,8 @@ public class sharepoint_AssetController : Controller
                 {
 
                     // Assuming you have retrieved the items from SharePoint
-                    string siteId1 = "ee34a301-d614-4508-835f-9c1f2e339864";
-                    string listId1 = "96fedfa7-c7ad-4399-851e-ba1527f0dabd";
+                    string siteId1 = _siteId;
+                    string listId1 = _listId;
                     string emailColumnInternalName = "AssetTag";
                     string emailToFilter = asset.asset_tag.ToString();
                     //string newEmailValue = "kajedemail@example.com"; // Replace with the new email value you want to set
